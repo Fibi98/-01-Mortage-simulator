@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulatore Acquisto Casa</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f6f9;margin:0;padding:20px}
+h1{text-align:center}
+.card{background:#fff;padding:15px;margin:10px 0;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+input{width:100%;padding:8px;box-sizing:border-box}
+button{padding:10px 15px;margin:5px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{border:1px solid #ddd;padding:6px;text-align:right}
+th:first-child,td:first-child{text-align:center}
+canvas{max-height:350px}
+.kpi{font-size:18px;font-weight:bold}
+</style>
+</head>
+<body>
+<h1>Simulatore Acquisto Casa</h1>
+
+<div class="card">
+<div class="grid">
+<input id="price" type="number" value="250000" placeholder="Prezzo immobile">
+<input id="down" type="number" value="50000" placeholder="Anticipo">
+<input id="years" type="number" value="25" placeholder="Durata mutuo">
+<input id="rate" type="number" value="3" step="0.01" placeholder="Tasso">
+<input id="agency" type="number" value="3" step="0.01" placeholder="Agenzia %">
+<input id="notary" type="number" value="3000" placeholder="Notaio">
+<input id="reno" type="number" value="10000" placeholder="Ristrutturazione">
+<input id="imu" type="number" value="0" placeholder="IMU">
+<input id="condo" type="number" value="1200" placeholder="Condominiali">
+<input id="maint" type="number" value="1" step="0.01" placeholder="Manutenzione %">
+<input id="growth" type="number" value="2" step="0.01" placeholder="Rivalutazione %">
+<input id="invest" type="number" value="5" step="0.01" placeholder="Rendimento investimento %">
+<input id="infl" type="number" value="2" step="0.01" placeholder="Inflazione %">
+<input id="horizon" type="number" value="30" placeholder="Orizzonte">
+</div>
+<button onclick="calculate()">Calcola</button>
+<button onclick="location.reload()">Reset</button>
+<button onclick="exportCSV()">Esporta CSV</button>
+</div>
+
+<div class="card"><div id="kpis"></div></div>
+<div class="card"><table id="results"><thead></thead><tbody></tbody></table></div>
+<div class="card"><canvas id="c1"></canvas></div>
+<div class="card"><canvas id="c2"></canvas></div>
+<div class="card"><canvas id="c3"></canvas></div>
+
+<script>
+let tableData=[]; let charts=[];
+const eur=v=>new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
+
+function calcMortgage(principal,annualRate,years){
+ const r=annualRate/100/12,n=years*12;
+ const p= principal*r/(1-Math.pow(1+r,-n));
+ let bal=principal,s=[];
+ for(let y=1;y<=years;y++){
+   let intY=0,capY=0;
+   for(let m=0;m<12;m++){
+      let i=bal*r,c=p-i;
+      bal=Math.max(0,bal-c);
+      intY+=i; capY+=c;
+   }
+   s.push({year:y,interest:intY,capital:capY,balance:bal});
+ }
+ return {monthly:p,schedule:s};
+}
+
+function calculate(){
+ charts.forEach(c=>c.destroy());
+ const price=+priceEl.value||0;
+ const down=+downEl.value||0;
+ const years=+yearsEl.value||1;
+ const rate=+rateEl.value||0;
+ const agencyCost=price*(+agencyEl.value||0)/100;
+ const notary=+notaryEl.value||0;
+ const reno=+renoEl.value||0;
+ const imu=+imuEl.value||0;
+ const condo=+condoEl.value||0;
+ const maint=+maintEl.value/100||0;
+ const growth=+growthEl.value/100||0;
+ const investR=+investEl.value/100||0;
+ const horizon=+horizonEl.value||years;
+
+ const loan=Math.max(0,price-down);
+ const mort=calcMortgage(loan,rate,years);
+ let investVal=down+agencyCost+notary+reno;
+
+ tableData=[];
+ let labels=[],equity=[],alt=[],values=[],debt=[],costs=[];
+
+ for(let y=1;y<=horizon;y++){
+   const homeValue=price*Math.pow(1+growth,y);
+   const sch=y<=mort.schedule.length?mort.schedule[y-1]:{balance:0};
+   const bal=sch.balance||0;
+   const maintCost=homeValue*maint;
+   const annualCosts=imu+condo+maintCost;
+   const annualMortgage=y<=years?mort.monthly*12:0;
+   const totalOut=annualCosts+annualMortgage;
+   investVal*=1+investR;
+   const eq=homeValue-bal;
+
+   tableData.push([y,homeValue,bal,eq,annualCosts,annualMortgage,totalOut,investVal]);
+
+   labels.push(y); equity.push(eq); alt.push(investVal);
+   values.push(homeValue); debt.push(bal); costs.push(annualCosts);
+ }
+
+ const finalEq=equity[equity.length-1];
+ const finalInv=alt[alt.length-1];
+ const cagrHouse=Math.pow(finalEq/(down+agencyCost+notary+reno),1/horizon)-1;
+ const cagrInv=Math.pow(finalInv/(down+agencyCost+notary+reno),1/horizon)-1;
+
+ document.getElementById("kpis").innerHTML=`
+ <div class="grid">
+ <div class="kpi">Patrimonio Casa: ${eur(finalEq)}</div>
+ <div class="kpi">Investimento: ${eur(finalInv)}</div>
+ <div class="kpi">Differenza: ${eur(finalEq-finalInv)}</div>
+ <div class="kpi">CAGR Casa: ${(cagrHouse*100).toFixed(2)}%</div>
+ <div class="kpi">CAGR Investimento: ${(cagrInv*100).toFixed(2)}%</div>
+ </div>`;
+
+ generateTable();
+ charts.push(new Chart(c1,{type:'line',data:{labels,datasets:[{label:'Equity Casa',data:equity},{label:'Investimento',data:alt}]}}));
+ charts.push(new Chart(c2,{type:'line',data:{labels,datasets:[{label:'Valore Immobile',data:values},{label:'Debito Residuo',data:debt}]}}));
+ charts.push(new Chart(c3,{type:'bar',data:{labels,datasets:[{label:'Costi Annuali',data:costs}]}}));
+}
+
+function generateTable(){
+ const head=document.querySelector("#results thead");
+ const body=document.querySelector("#results tbody");
+ head.innerHTML="<tr><th>Anno</th><th>Valore Immobile</th><th>Debito Residuo</th><th>Equity Casa</th><th>Costi Annuali</th><th>Rata Annua</th><th>Esborso Totale</th><th>Investimento</th></tr>";
+ body.innerHTML=tableData.map(r=>"<tr>"+r.map((v,i)=>"<td>"+(i?eur(v):v)+"</td>").join("")+"</tr>").join("");
+}
+
+function exportCSV(){
+ let csv="Anno,Valore Immobile,Debito Residuo,Equity Casa,Costi Annuali,Rata Annua,Esborso Totale,Investimento\n";
+ tableData.forEach(r=>csv+=r.join(",")+"\n");
+ const a=document.createElement("a");
+ a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
+ a.download="simulazione_casa.csv";
+ a.click();
+}
+
+const priceEl=price,downEl=down,yearsEl=years,rateEl=rate,agencyEl=agency,notaryEl=notary,renoEl=reno,imuEl=imu,condoEl=condo,maintEl=maint,growthEl=growth,investEl=invest,horizonEl=horizon;
+calculate();
+</script>
+</body>
+</html>
