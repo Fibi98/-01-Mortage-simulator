@@ -6,17 +6,103 @@
 <title>Simulatore Acquisto Casa</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-body{font-family:Arial,sans-serif;background:#f4f6f9;margin:0;padding:20px}
-h1{text-align:center}
-.card{background:#fff;padding:15px;margin:10px 0;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
-input{width:100%;padding:8px;box-sizing:border-box}
-button{padding:10px 15px;margin:5px}
-table{width:100%;border-collapse:collapse;font-size:12px}
-th,td{border:1px solid #ddd;padding:6px;text-align:right}
-th:first-child,td:first-child{text-align:center}
-canvas{max-height:350px}
-.kpi{font-size:18px;font-weight:bold}
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f1f5f9;
+    margin: 0;
+    padding: 40px;
+    color: #1e293b;
+}
+
+
+h1 {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 30px;
+}
+
+
+.card {
+    background: white;
+    padding: 25px;
+    margin: 20px 0;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+    gap: 18px;
+}
+
+
+input {
+    width:100%;
+    padding:12px;
+    box-sizing:border-box;
+    border-radius:10px;
+    border:1px solid #cbd5e1;
+    font-size:15px;
+}
+
+
+button {
+    padding:12px 20px;
+    margin:8px;
+    border:none;
+    border-radius:10px;
+    background:#2563eb;
+    color:white;
+    font-size:15px;
+    cursor:pointer;
+}
+
+
+button:hover {
+    background:#1d4ed8;
+}
+
+
+table {
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px;
+}
+
+
+th {
+    background:#2563eb;
+    color:white;
+}
+
+
+th,td {
+    border:1px solid #ddd;
+    padding:8px;
+    text-align:right;
+}
+
+
+th:first-child,
+td:first-child {
+    text-align:center;
+}
+
+
+canvas {
+    max-height:350px;
+}
+
+
+.kpi {
+    background:#f8fafc;
+    padding:20px;
+    border-radius:15px;
+    font-size:20px;
+    font-weight:bold;
+}
 </style>
 </head>
 <body>
