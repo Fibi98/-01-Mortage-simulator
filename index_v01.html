@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Simulatore Acquisto Casa</title>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
+
 body {
     font-family: "Segoe UI", Arial, sans-serif;
     background: #f1f5f9;
@@ -13,32 +19,99 @@ body {
     padding: 40px;
     color: #1e293b;
 }
+
+
+.container {
+    max-width: 1400px;
+    margin: auto;
+}
+
+
 h1 {
     text-align: center;
     font-size: 36px;
     margin-bottom: 30px;
 }
+
+
+.dashboard {
+    display:grid;
+    grid-template-columns:380px 1fr;
+    gap:25px;
+}
+
+
 .card {
-    background: white;
-    padding: 25px;
-    margin: 20px 0;
-    border-radius: 18px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+
+    background:white;
+    padding:25px;
+    margin:20px 0;
+    border-radius:18px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+
 }
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
-    gap: 18px;
+
+
+
+.input-section {
+
+    margin-bottom:30px;
+
 }
-input {
-    width:100%;
-    padding:12px;
-    box-sizing:border-box;
-    border-radius:10px;
-    border:1px solid #cbd5e1;
+
+
+
+.section-title {
+
+    font-size:18px;
+    font-weight:700;
+    color:#2563eb;
+    margin-bottom:15px;
+
+}
+
+
+
+.input-row {
+
+    display:grid;
+    grid-template-columns:1fr 130px;
+    align-items:center;
+    gap:20px;
+    padding:10px 0;
+    border-bottom:1px solid #e2e8f0;
+
+}
+
+
+
+.input-row label {
+
     font-size:15px;
+    font-weight:600;
+    color:#334155;
+
 }
+
+
+
+.input-row input {
+
+    width:100%;
+    box-sizing:border-box;
+    padding:10px;
+    background:#f8fafc;
+    border:1px solid #cbd5e1;
+    border-radius:8px;
+    text-align:right;
+    font-size:15px;
+
+}
+
+
+
 button {
+
     padding:12px 20px;
     margin:8px;
     border:none;
@@ -47,225 +120,875 @@ button {
     color:white;
     font-size:15px;
     cursor:pointer;
+
 }
+
+
+
 button:hover {
+
     background:#1d4ed8;
+
 }
-table {
-    width:100%;
-    border-collapse:collapse;
-    font-size:13px;
+
+
+
+.grid {
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:18px;
+
 }
-th {
-    background:#2563eb;
-    color:white;
-}
-th,td {
-    border:1px solid #ddd;
-    padding:8px;
-    text-align:right;
-}
-th:first-child,
-td:first-child {
-    text-align:center;
-}
-canvas {
-    max-height:350px;
-}
+
+
+
 .kpi {
+
     background:#f8fafc;
     padding:20px;
     border-radius:15px;
     font-size:20px;
     font-weight:bold;
+
 }
-.container {
-    max-width:1400px;
-    margin:auto;
+
+
+
+table {
+
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px;
+
 }
-.dashboard {
-    display:grid;
-    grid-template-columns:380px 1fr;
-    gap:25px;
+
+
+
+th {
+
+    background:#2563eb;
+    color:white;
+
 }
-.input-row {
-    display: grid;
-    grid-template-columns: 1fr 120px;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 12px;
+
+
+
+th,td {
+
+    border:1px solid #ddd;
+    padding:8px;
+    text-align:right;
+
 }
-.input-row label {
-    font-size: 15px;
-    font-weight: 600;
-    color: #334155;
+
+
+
+th:first-child,
+td:first-child {
+
+    text-align:center;
+
 }
-.input-row input {
-    width: 100%;
-    text-align: right;
-}  
-.input-row input {
-    background:#f8fafc;
-    border:1px solid #cbd5e1;
-    border-radius:8px;
-    padding:10px;
-}    
+
+
+
+canvas {
+
+    max-height:350px;
+
+}
+
+
+
+@media(max-width:900px){
+
+    .dashboard {
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
 </style>
+
 </head>
+
+
 <body>
+
 
 <div class="container">
 
+
 <h1>🏠 Simulatore Acquisto Casa</h1>
+
+
+
 <div class="dashboard">
+
+
+
 <div class="card">
-<div class="grid">
+
+
+<div class="input-section">
+
+
+<div class="section-title">
+🏠 Immobile
+</div>
+
+
 <div class="input-row">
+
 <label>Prezzo immobile (€)</label>
 <input id="price" type="number" value="250000">
+
 </div>
 
 
+
 <div class="input-row">
+
 <label>Anticipo iniziale (€)</label>
 <input id="down" type="number" value="50000">
+
+</div>
+
+
+
+<div class="input-row">
+
+<label>Ristrutturazione (€)</label>
+<input id="reno" type="number" value="10000">
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="input-section">
+
+
+<div class="section-title">
+🏦 Mutuo
 </div>
 
 
 <div class="input-row">
+
 <label>Durata mutuo (anni)</label>
 <input id="years" type="number" value="25">
+
+</div>
+
+
+
+<div class="input-row">
+
+<label>Tasso mutuo annuo (%)</label>
+<input id="rate" type="number" value="3" step="0.01">
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="input-section">
+
+
+<div class="section-title">
+💸 Costi acquisto e gestione
 </div>
 
 
 <div class="input-row">
-<label>Tasso mutuo annuo (%)</label>
-<input id="rate" type="number" value="3">
+
+<label>Agenzia immobiliare (%)</label>
+<input id="agency" type="number" value="3" step="0.01">
+
 </div>
-<input id="agency" type="number" value="3" step="0.01" placeholder="Agenzia %">
-<input id="notary" type="number" value="3000" placeholder="Notaio">
-<input id="reno" type="number" value="10000" placeholder="Ristrutturazione">
-<input id="imu" type="number" value="0" placeholder="IMU">
-<input id="condo" type="number" value="1200" placeholder="Condominiali">
-<input id="maint" type="number" value="1" step="0.01" placeholder="Manutenzione %">
-<input id="growth" type="number" value="2" step="0.01" placeholder="Rivalutazione %">
-<input id="invest" type="number" value="5" step="0.01" placeholder="Rendimento investimento %">
-<input id="infl" type="number" value="2" step="0.01" placeholder="Inflazione %">
-<input id="horizon" type="number" value="30" placeholder="Orizzonte">
+
+
+
+<div class="input-row">
+
+<label>Notaio (€)</label>
+<input id="notary" type="number" value="3000">
+
 </div>
+
+
+
+<div class="input-row">
+
+<label>IMU annuale (€)</label>
+<input id="imu" type="number" value="0">
+
+</div>
+
+
+
+<div class="input-row">
+
+<label>Spese condominiali annuali (€)</label>
+<input id="condo" type="number" value="1200">
+
+</div>
+
+
+
+<div class="input-row">
+
+<label>Manutenzione annua (%)</label>
+<input id="maint" type="number" value="1" step="0.01">
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="input-section">
+
+
+<div class="section-title">
+📈 Ipotesi finanziarie
+</div>
+
+
+
+<div class="input-row">
+
+<label>Rivalutazione immobile annua (%)</label>
+<input id="growth" type="number" value="2" step="0.01">
+
+</div>
+
+
+
+<div class="input-row">
+
+<label>Rendimento investimento (%)</label>
+<input id="invest" type="number" value="5" step="0.01">
+
+</div>
+
+
+
+<div class="input-row">
+
+<label>Inflazione (%)</label>
+<input id="infl" type="number" value="2" step="0.01">
+
+</div>
+
+
+
+<div class="input-row">
+
+<label>Orizzonte simulazione (anni)</label>
+<input id="horizon" type="number" value="30">
+
+</div>
+
+
+</div>
+
+
+
+
 <button onclick="calculate()">Calcola</button>
+
 <button onclick="location.reload()">Reset</button>
+
 <button onclick="exportCSV()">Esporta CSV</button>
+
+
+
 </div>
+
+
+
+
+
+<div>
+
 
 <div class="card">
+
 <div id="kpis"></div>
-</div>
 
 </div>
-<div class="card"><table id="results"><thead></thead><tbody></tbody></table></div>
-<div class="card"><canvas id="c1"></canvas></div>
-<div class="card"><canvas id="c2"></canvas></div>
-<div class="card"><canvas id="c3"></canvas></div>
+<div class="card">
+
+<table id="results">
+
+<thead></thead>
+
+<tbody></tbody>
+
+</table>
+
 </div>
+
+
+
+<div class="card">
+
+<canvas id="c1"></canvas>
+
+</div>
+
+
+
+<div class="card">
+
+<canvas id="c2"></canvas>
+
+</div>
+
+
+
+<div class="card">
+
+<canvas id="c3"></canvas>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
 <script>
-let tableData=[]; let charts=[];
-const eur=v=>new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
+
+
+let tableData=[];
+
+let charts=[];
+
+
+
+const eur=v=>new Intl.NumberFormat('it-IT',
+{
+style:'currency',
+currency:'EUR',
+maximumFractionDigits:0
+}).format(v);
+
+
+
+
 
 function calcMortgage(principal,annualRate,years){
- const r=annualRate/100/12,n=years*12;
+
+ const r=annualRate/100/12;
+
+ const n=years*12;
+
  const p= principal*r/(1-Math.pow(1+r,-n));
- let bal=principal,s=[];
+
+ let bal=principal;
+
+ let s=[];
+
+
  for(let y=1;y<=years;y++){
-   let intY=0,capY=0;
+
+   let intY=0;
+
+   let capY=0;
+
+
    for(let m=0;m<12;m++){
-      let i=bal*r,c=p-i;
+
+      let i=bal*r;
+
+      let c=p-i;
+
       bal=Math.max(0,bal-c);
-      intY+=i; capY+=c;
+
+      intY+=i;
+
+      capY+=c;
+
    }
-   s.push({year:y,interest:intY,capital:capY,balance:bal});
+
+
+   s.push(
+   {
+      year:y,
+      interest:intY,
+      capital:capY,
+      balance:bal
+   });
+
  }
- return {monthly:p,schedule:s};
+
+
+ return {
+
+ monthly:p,
+
+ schedule:s
+
+ };
+
 }
+
+
+
+
 
 function calculate(){
+
+
  charts.forEach(c=>c.destroy());
+
+
+
  const price=+priceEl.value||0;
+
  const down=+downEl.value||0;
+
  const years=+yearsEl.value||1;
+
  const rate=+rateEl.value||0;
+
+
+
  const agencyCost=price*(+agencyEl.value||0)/100;
+
  const notary=+notaryEl.value||0;
+
  const reno=+renoEl.value||0;
+
  const imu=+imuEl.value||0;
+
  const condo=+condoEl.value||0;
+
  const maint=+maintEl.value/100||0;
+
  const growth=+growthEl.value/100||0;
+
  const investR=+investEl.value/100||0;
+
  const horizon=+horizonEl.value||years;
 
+
+
+
  const loan=Math.max(0,price-down);
+
  const mort=calcMortgage(loan,rate,years);
+
+
+
  let investVal=down+agencyCost+notary+reno;
 
+
+
  tableData=[];
- let labels=[],equity=[],alt=[],values=[],debt=[],costs=[];
+
+
+
+ let labels=[];
+
+ let equity=[];
+
+ let alt=[];
+
+ let values=[];
+
+ let debt=[];
+
+ let costs=[];
+
+
+
 
  for(let y=1;y<=horizon;y++){
+
+
+
    const homeValue=price*Math.pow(1+growth,y);
-   const sch=y<=mort.schedule.length?mort.schedule[y-1]:{balance:0};
+
+
+
+   const sch=y<=mort.schedule.length
+   ?mort.schedule[y-1]
+   :{balance:0};
+
+
+
    const bal=sch.balance||0;
+
+
+
    const maintCost=homeValue*maint;
+
+
+
    const annualCosts=imu+condo+maintCost;
-   const annualMortgage=y<=years?mort.monthly*12:0;
+
+
+
+   const annualMortgage=y<=years
+   ?mort.monthly*12
+   :0;
+
+
+
    const totalOut=annualCosts+annualMortgage;
+
+
+
    investVal*=1+investR;
+
+
+
    const eq=homeValue-bal;
 
-   tableData.push([y,homeValue,bal,eq,annualCosts,annualMortgage,totalOut,investVal]);
 
-   labels.push(y); equity.push(eq); alt.push(investVal);
-   values.push(homeValue); debt.push(bal); costs.push(annualCosts);
+
+
+   tableData.push(
+   [
+   y,
+   homeValue,
+   bal,
+   eq,
+   annualCosts,
+   annualMortgage,
+   totalOut,
+   investVal
+   ]);
+
+
+
+   labels.push(y);
+
+   equity.push(eq);
+
+   alt.push(investVal);
+
+   values.push(homeValue);
+
+   debt.push(bal);
+
+   costs.push(annualCosts);
+
+
+
  }
 
+
+
+
  const finalEq=equity[equity.length-1];
+
  const finalInv=alt[alt.length-1];
- const cagrHouse=Math.pow(finalEq/(down+agencyCost+notary+reno),1/horizon)-1;
- const cagrInv=Math.pow(finalInv/(down+agencyCost+notary+reno),1/horizon)-1;
+
+
+
+ const cagrHouse=
+ Math.pow(
+ finalEq/(down+agencyCost+notary+reno),
+ 1/horizon
+ )-1;
+
+
+
+ const cagrInv=
+ Math.pow(
+ finalInv/(down+agencyCost+notary+reno),
+ 1/horizon
+ )-1;
+
+
+
+
 
  document.getElementById("kpis").innerHTML=`
+
  <div class="grid">
- <div class="kpi">Patrimonio Casa: ${eur(finalEq)}</div>
- <div class="kpi">Investimento: ${eur(finalInv)}</div>
- <div class="kpi">Differenza: ${eur(finalEq-finalInv)}</div>
- <div class="kpi">CAGR Casa: ${(cagrHouse*100).toFixed(2)}%</div>
- <div class="kpi">CAGR Investimento: ${(cagrInv*100).toFixed(2)}%</div>
- </div>`;
+
+
+ <div class="kpi">
+ 🏠 Patrimonio immobiliare:
+ ${eur(finalEq)}
+ </div>
+
+
+ <div class="kpi">
+ 💰 Investimento alternativo:
+ ${eur(finalInv)}
+ </div>
+
+
+ <div class="kpi">
+ 📊 Differenza:
+ ${eur(finalEq-finalInv)}
+ </div>
+
+
+ <div class="kpi">
+ CAGR Casa:
+ ${(cagrHouse*100).toFixed(2)}%
+ </div>
+
+
+ <div class="kpi">
+ CAGR Investimento:
+ ${(cagrInv*100).toFixed(2)}%
+ </div>
+
+
+ </div>
+
+ `;
+
+
+
 
  generateTable();
- charts.push(new Chart(c1,{type:'line',data:{labels,datasets:[{label:'Equity Casa',data:equity},{label:'Investimento',data:alt}]}}));
- charts.push(new Chart(c2,{type:'line',data:{labels,datasets:[{label:'Valore Immobile',data:values},{label:'Debito Residuo',data:debt}]}}));
- charts.push(new Chart(c3,{type:'bar',data:{labels,datasets:[{label:'Costi Annuali',data:costs}]}}));
+
+
+
+
+
+ charts.push(
+ new Chart(c1,
+ {
+ type:'line',
+
+ data:
+ {
+ labels,
+
+ datasets:
+ [
+ {
+ label:'Equity Casa',
+ data:equity
+ },
+
+ {
+ label:'Investimento',
+ data:alt
+ }
+
+ ]
+
+ }
+
+ }));
+
+
+
+
+
+
+ charts.push(
+ new Chart(c2,
+ {
+
+ type:'line',
+
+ data:
+ {
+
+ labels,
+
+ datasets:
+ [
+ {
+ label:'Valore Immobile',
+ data:values
+ },
+
+ {
+ label:'Debito Residuo',
+ data:debt
+ }
+
+ ]
+
+ }
+
+ }));
+
+
+
+
+
+
+
+ charts.push(
+ new Chart(c3,
+ {
+
+ type:'bar',
+
+ data:
+ {
+
+ labels,
+
+ datasets:
+ [
+ {
+ label:'Costi Annuali',
+ data:costs
+ }
+
+ ]
+
+ }
+
+ }));
+
+
+
 }
+
+
+
+
 
 function generateTable(){
+
+
  const head=document.querySelector("#results thead");
+
  const body=document.querySelector("#results tbody");
- head.innerHTML="<tr><th>Anno</th><th>Valore Immobile</th><th>Debito Residuo</th><th>Equity Casa</th><th>Costi Annuali</th><th>Rata Annua</th><th>Esborso Totale</th><th>Investimento</th></tr>";
- body.innerHTML=tableData.map(r=>"<tr>"+r.map((v,i)=>"<td>"+(i?eur(v):v)+"</td>").join("")+"</tr>").join("");
+
+
+
+ head.innerHTML=
+
+ "<tr>"+
+ "<th>Anno</th>"+
+ "<th>Valore Immobile</th>"+
+ "<th>Debito Residuo</th>"+
+ "<th>Equity Casa</th>"+
+ "<th>Costi Annuali</th>"+
+ "<th>Rata Annua</th>"+
+ "<th>Esborso Totale</th>"+
+ "<th>Investimento</th>"+
+ "</tr>";
+
+
+
+
+ body.innerHTML=
+
+ tableData.map(r=>
+
+ "<tr>"+
+ r.map((v,i)=>
+
+ "<td>"+
+ (i?eur(v):v)+
+ "</td>"
+
+ ).join("")+
+ "</tr>"
+
+ ).join("");
+
 }
+
+
+
+
 
 function exportCSV(){
- let csv="Anno,Valore Immobile,Debito Residuo,Equity Casa,Costi Annuali,Rata Annua,Esborso Totale,Investimento\n";
- tableData.forEach(r=>csv+=r.join(",")+"\n");
+
+
+ let csv=
+ "Anno,Valore Immobile,Debito Residuo,Equity Casa,Costi Annuali,Rata Annua,Esborso Totale,Investimento\n";
+
+
+
+ tableData.forEach(r=>
+
+ csv+=r.join(",")+"\n"
+
+ );
+
+
+
  const a=document.createElement("a");
- a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
+
+ a.href=URL.createObjectURL(
+ new Blob(
+ [csv],
+ {type:"text/csv"}
+ ));
+
  a.download="simulazione_casa.csv";
+
  a.click();
+
+
 }
 
-const priceEl=price,downEl=down,yearsEl=years,rateEl=rate,agencyEl=agency,notaryEl=notary,renoEl=reno,imuEl=imu,condoEl=condo,maintEl=maint,growthEl=growth,investEl=invest,horizonEl=horizon;
+
+
+
+
+const priceEl=price;
+
+const downEl=down;
+
+const yearsEl=years;
+
+const rateEl=rate;
+
+const agencyEl=agency;
+
+const notaryEl=notary;
+
+const renoEl=reno;
+
+const imuEl=imu;
+
+const condoEl=condo;
+
+const maintEl=maint;
+
+const growthEl=growth;
+
+const investEl=invest;
+
+const horizonEl=horizon;
+
+
+
 calculate();
+
+
 </script>
+
+
 </body>
+
 </html>
