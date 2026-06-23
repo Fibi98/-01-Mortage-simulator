@@ -13,15 +13,11 @@ body {
     padding: 40px;
     color: #1e293b;
 }
-
-
 h1 {
     text-align: center;
     font-size: 36px;
     margin-bottom: 30px;
 }
-
-
 .card {
     background: white;
     padding: 25px;
@@ -29,15 +25,11 @@ h1 {
     border-radius: 18px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.08);
 }
-
-
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
     gap: 18px;
 }
-
-
 input {
     width:100%;
     padding:12px;
@@ -46,8 +38,6 @@ input {
     border:1px solid #cbd5e1;
     font-size:15px;
 }
-
-
 button {
     padding:12px 20px;
     margin:8px;
@@ -58,50 +48,45 @@ button {
     font-size:15px;
     cursor:pointer;
 }
-
-
 button:hover {
     background:#1d4ed8;
 }
-
-
 table {
     width:100%;
     border-collapse:collapse;
     font-size:13px;
 }
-
-
 th {
     background:#2563eb;
     color:white;
 }
-
-
 th,td {
     border:1px solid #ddd;
     padding:8px;
     text-align:right;
 }
-
-
 th:first-child,
 td:first-child {
     text-align:center;
 }
-
-
 canvas {
     max-height:350px;
 }
-
-
 .kpi {
     background:#f8fafc;
     padding:20px;
     border-radius:15px;
     font-size:20px;
     font-weight:bold;
+}
+.container {
+    max-width:1400px;
+    margin:auto;
+}
+.dashboard {
+    display:grid;
+    grid-template-columns:380px 1fr;
+    gap:25px;
 }
 </style>
 </head>
@@ -110,7 +95,7 @@ canvas {
 <div class="container">
 
 <h1>🏠 Simulatore Acquisto Casa</h1>
-
+<div class="dashboard">
 <div class="card">
 <div class="grid">
 <input id="price" type="number" value="250000" placeholder="Prezzo immobile">
@@ -133,7 +118,11 @@ canvas {
 <button onclick="exportCSV()">Esporta CSV</button>
 </div>
 
-<div class="card"><div id="kpis"></div></div>
+<div class="card">
+<div id="kpis"></div>
+</div>
+
+</div>
 <div class="card"><table id="results"><thead></thead><tbody></tbody></table></div>
 <div class="card"><canvas id="c1"></canvas></div>
 <div class="card"><canvas id="c2"></canvas></div>
