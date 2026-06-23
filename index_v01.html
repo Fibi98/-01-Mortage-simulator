@@ -106,7 +106,10 @@ canvas {
 </style>
 </head>
 <body>
-<h1>Simulatore Acquisto Casa</h1>
+
+<div class="container">
+
+<h1>🏠 Simulatore Acquisto Casa</h1>
 
 <div class="card">
 <div class="grid">
@@ -135,7 +138,7 @@ canvas {
 <div class="card"><canvas id="c1"></canvas></div>
 <div class="card"><canvas id="c2"></canvas></div>
 <div class="card"><canvas id="c3"></canvas></div>
-
+</div>
 <script>
 let tableData=[]; let charts=[];
 const eur=v=>new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
