@@ -1,10 +1,13 @@
 import { calculateMortgage } from "./calculations/mortgage.js";
+import { calculateBankOffer } from "./calculations/bank-comparison.js";
 import { renderCharts } from "./components/charts.js";
 import { formatCurrency, formatPercentage, formatCsvValue } from "./utils/formatters.js";
 import { readSimulationInputs } from "./utils/validators.js";
 
 const DEFAULTS = {
   price: 250000, down: 50000, reno: 10000, years: 25, rate: 3,
+  bankAName: "Banca A", bankATan: 3, bankATaeg: "", bankAFees: 0, bankAMonthly: 0,
+  bankBName: "Banca B", bankBTan: 3.2, bankBTaeg: "", bankBFees: 0, bankBMonthly: 0,
   mortgageExtraMonthly: 0, mainResidenceEligible: true, deductibleShare: 100,
   agency: 3, notary: 3000, imu: 0, condo: 1200, maint: 1,
   growth: 2, invest: 5, infl: 2, horizon: 30
@@ -62,6 +65,64 @@ function renderTable() {
     });
     body.appendChild(tableRow);
   });
+}
+
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (character) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  })[character]);
+}
+
+function compareBanks() {
+  const results = document.getElementById("bank-comparison-results");
+  const readValue = (id, label, optional = false) => {
+    const raw = document.getElementById(id).value.trim();
+    if (optional && raw === "") return null;
+    if (raw === "") throw new Error(`Inserisci un valore per: ${label}.`);
+    const value = Number(raw);
+    if (!Number.isFinite(value) || value < 0) throw new Error(`Il valore di "${label}" deve essere un numero non negativo.`);
+    return value;
+  };
+  try {
+    const principal = readValue("price", "Prezzo immobile") - readValue("down", "Anticipo");
+    if (principal <= 0) throw new Error("Il capitale finanziato deve essere maggiore di zero per confrontare le offerte.");
+    const years = readValue("years", "Durata mutuo");
+    if (!Number.isInteger(years) || years <= 0) throw new Error("La durata del mutuo deve essere un numero intero positivo.");
+    const readOffer = (prefix, label) => {
+      const name = document.getElementById(prefix + "Name").value.trim() || label;
+      const tan = readValue(prefix + "Tan", label + " - TAN");
+      const taeG = readValue(prefix + "Taeg", label + " - TAEG", true);
+      const initialCosts = readValue(prefix + "Fees", label + " - spese iniziali");
+      const monthlyCosts = readValue(prefix + "Monthly", label + " - costi mensili");
+      return calculateBankOffer(principal, years, { name, tan, taeg: taeG, initialCosts, monthlyCosts });
+    };
+    const offers = [readOffer("bankA", "Offerta A"), readOffer("bankB", "Offerta B")];
+    const money = (value) => formatCurrency(value);
+    const winner = offers[0].totalCost === offers[1].totalCost ? null : offers.reduce((a, b) => a.totalCost < b.totalCost ? a : b);
+    const rows = [
+      ["Capitale finanziato", money(principal), money(principal)],
+      ["Durata", years + " anni", years + " anni"],
+      ["TAN", formatPercentage(offers[0].tan / 100), formatPercentage(offers[1].tan / 100)],
+      ["TAEG dichiarato", offers[0].taeg === null ? "Non indicato" : formatPercentage(offers[0].taeg / 100), offers[1].taeg === null ? "Non indicato" : formatPercentage(offers[1].taeg / 100)],
+      ["Rata mensile", money(offers[0].monthlyPayment), money(offers[1].monthlyPayment)],
+      ["Interessi complessivi", money(offers[0].totalInterest), money(offers[1].totalInterest)],
+      ["Spese iniziali", money(offers[0].initialCosts), money(offers[1].initialCosts)],
+      ["Altri costi mensili (totale)", money(offers[0].recurringCosts), money(offers[1].recurringCosts)],
+      ["Esborso complessivo stimato", money(offers[0].totalOutflow), money(offers[1].totalOutflow)]
+    ];
+    results.innerHTML = `
+      <table class="comparison-table">
+        <thead><tr><th>Voce</th><th>${escapeHtml(offers[0].name)}</th><th>${escapeHtml(offers[1].name)}</th></tr></thead>
+        <tbody>${rows.map(row => `<tr><th>${row[0]}</th><td>${row[1]}</td><td>${row[2]}</td></tr>`).join("")}</tbody>
+      </table>
+      <p class="comparison-verdict">${winner ? "In base ai costi inseriti, risulta meno costosa: " + escapeHtml(winner.name) + " (risparmio stimato " + money(Math.abs(offers[0].totalOutflow - offers[1].totalOutflow)) + ")." : "Le due offerte hanno lo stesso esborso complessivo stimato."}</p>
+      <p class="input-help">Stima matematica basata su TAN, rate mensili costanti e costi inseriti. Il TAEG è solo riportato a titolo informativo. Verifica sempre il piano e il prospetto informativo ufficiale della banca.</p>`;
+    showValidationMessage();
+  } catch (error) {
+    results.replaceChildren();
+    showValidationMessage(error.message);
+  }
 }
 
 function calculate() {
@@ -173,9 +234,11 @@ function resetInputs() {
     else element.value = value;
   });
   calculate();
+  document.getElementById("bank-comparison-results").replaceChildren();
 }
 
 document.getElementById("calculate-button").addEventListener("click", calculate);
 document.getElementById("reset-button").addEventListener("click", resetInputs);
 document.getElementById("export-button").addEventListener("click", exportCsv);
+document.getElementById("compare-banks-button").addEventListener("click", compareBanks);
 calculate();
