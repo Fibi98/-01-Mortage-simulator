@@ -49,7 +49,7 @@ function exportCsv(){
  if(tableData.length===0){showValidationMessage("Calcola prima una simulazione da esportare.");return;}
  const headings=["Anno","Valore Immobile","Debito Residuo","Equity Casa","Costi Annuali","Rata Annua","Esborso Totale","Investimento"];
  const rows=[headings.map(formatCsvValue).join(";"),...tableData.map(row=>row.map(formatCsvValue).join(";"))];
- const blob=new Blob(["\\uFEFF"+rows.join("\\r\\n")],{type:"text/csv;charset=utf-8;"});
+ const blob=new Blob(["\uFEFF"+rows.join("\r\n")],{type:"text/csv;charset=utf-8;"});
  const url=URL.createObjectURL(blob),link=document.createElement("a");link.href=url;link.download="simulazione_casa.csv";link.click();URL.revokeObjectURL(url);
 }
 function resetInputs(){Object.entries(DEFAULTS).forEach(([id,value])=>{document.getElementById(id).value=value;});calculate();}
