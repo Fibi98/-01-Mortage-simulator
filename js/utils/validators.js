@@ -53,7 +53,7 @@ export function readSimulationInputs() {
   // Il campo inflazione è ancora inutilizzato nel modello finanziario originale.
   for (const field of ["growth", "invest"]) {
     if (values[field] <= -100) {
-      throw new Error("I tassi di crescita, rendimento e inflazione devono essere superiori a -100%.");
+      throw new Error("I tassi di crescita e rendimento devono essere superiori a -100%.");
     }
   }
 
