@@ -41,6 +41,7 @@ h1 { margin-bottom: 30px; text-align: center; font-size: 36px; }
 }
 
 .input-row label { color: #334155; font-size: 15px; font-weight: 600; }
+.input-help { margin: 8px 0 0; color: #64748b; font-size: 13px; line-height: 1.45; }
 .input-row input {
   width: 100%;
   padding: 10px;
