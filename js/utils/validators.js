@@ -27,7 +27,6 @@ export function readSimulationInputs() {
     maint: readNumber("maint", "Manutenzione annua"),
     growth: readNumber("growth", "Rivalutazione immobile"),
     invest: readNumber("invest", "Rendimento investimento"),
-    infl: readNumber("infl", "Inflazione"),
     horizon: readNumber("horizon", "Orizzonte simulazione")
   };
 
@@ -51,7 +50,8 @@ export function readSimulationInputs() {
     }
   }
 
-  for (const field of ["growth", "invest", "infl"]) {
+  // Il campo inflazione è ancora inutilizzato nel modello finanziario originale.
+  for (const field of ["growth", "invest"]) {
     if (values[field] <= -100) {
       throw new Error("I tassi di crescita, rendimento e inflazione devono essere superiori a -100%.");
     }
