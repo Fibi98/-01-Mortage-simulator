@@ -40,6 +40,33 @@
 <div class="input-row"><label for="invest">Rendimento investimento (%)</label><input id="invest" type="number" step="0.01" value="5"></div>
 <div class="input-row"><label for="infl">Inflazione (%)</label><input id="infl" type="number" step="0.01" value="2"></div>
 <div class="input-row"><label for="horizon">Orizzonte simulazione (anni)</label><input id="horizon" type="number" min="1" step="1" value="30"></div></div>
+
+<div class="input-section bank-comparison">
+  <h2 class="section-title">⚖️ Confronta due offerte bancarie</h2>
+  <p class="input-help">Il confronto usa lo stesso capitale finanziato e la stessa durata del mutuo principale. Inserisci le condizioni delle due offerte.</p>
+  <div class="bank-offer-grid">
+    <div class="bank-offer">
+      <h3>Offerta A</h3>
+      <div class="input-row"><label for="bankAName">Banca</label><input id="bankAName" type="text" value="Banca A"></div>
+      <div class="input-row"><label for="bankATan">TAN (%)</label><input id="bankATan" type="number" min="0" step="0.01" value="3"></div>
+      <div class="input-row"><label for="bankATaeg">TAEG (%)</label><input id="bankATaeg" type="number" min="0" step="0.01" placeholder="Facoltativo"></div>
+      <div class="input-row"><label for="bankAFees">Spese iniziali (€)</label><input id="bankAFees" type="number" min="0" step="10" value="0"></div>
+      <div class="input-row"><label for="bankAMonthly">Altri costi mensili (€)</label><input id="bankAMonthly" type="number" min="0" step="1" value="0"></div>
+    </div>
+    <div class="bank-offer">
+      <h3>Offerta B</h3>
+      <div class="input-row"><label for="bankBName">Banca</label><input id="bankBName" type="text" value="Banca B"></div>
+      <div class="input-row"><label for="bankBTan">TAN (%)</label><input id="bankBTan" type="number" min="0" step="0.01" value="3.2"></div>
+      <div class="input-row"><label for="bankBTaeg">TAEG (%)</label><input id="bankBTaeg" type="number" min="0" step="0.01" placeholder="Facoltativo"></div>
+      <div class="input-row"><label for="bankBFees">Spese iniziali (€)</label><input id="bankBFees" type="number" min="0" step="10" value="0"></div>
+      <div class="input-row"><label for="bankBMonthly">Altri costi mensili (€)</label><input id="bankBMonthly" type="number" min="0" step="1" value="0"></div>
+    </div>
+  </div>
+  <p class="input-help">Il TAEG viene mostrato come dato di riferimento e non viene sommato ai costi: evita così di conteggiare due volte spese già incluse. Inserisci nei costi iniziali e mensili gli oneri che vuoi aggiungere al piano rateale.</p>
+  <button id="compare-banks-button" type="button">Confronta le offerte</button>
+  <div id="bank-comparison-results" class="table-scroll" aria-live="polite"></div>
+</div>
+
 <p id="validation-message" class="validation-message" role="alert" aria-live="polite"></p>
 <div class="actions"><button id="calculate-button" type="button">Calcola</button><button id="reset-button" type="button" class="secondary-button">Reset</button><button id="export-button" type="button" class="secondary-button">Esporta CSV</button></div>
 </section>
