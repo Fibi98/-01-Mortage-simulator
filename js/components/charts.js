@@ -30,7 +30,7 @@ export function renderCharts({ labels, equity, investment, homeValues, debt, cos
     type: "bar",
     data: {
       labels,
-      datasets: [{ label: "Costi annuali + spese accessorie (escluse rate)", data: costs }]
+      datasets: [{ label: "Costi annuali + spese accessorie, al netto della detrazione stimata (escluse rate)", data: costs }]
     }
   }));
 }
