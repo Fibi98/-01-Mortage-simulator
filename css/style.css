@@ -111,3 +111,47 @@ th:first-child, td:first-child { text-align: center; }
 .comparison-table th:first-child { text-align: left; }
 .comparison-verdict { padding: 14px; border-radius: 10px; background: #eff6ff; font-weight: 700; }
 @media (max-width: 650px) { .bank-offer-grid { grid-template-columns: 1fr; } }
+
+
+/* Tabbed dashboard */
+body { padding: 32px 24px 56px; background: #f4f7fb; }
+.container { max-width: 1180px; }
+.page-header { margin: 0 auto 28px; text-align: center; }
+.page-header .eyebrow, .eyebrow { color: #64748b; font-size: 11px; font-weight: 800; letter-spacing: .16em; }
+.page-header h1 { margin: 8px 0 10px; color: #172554; font-size: clamp(28px, 4vw, 38px); }
+.page-header p, .section-heading p { margin: 0; color: #64748b; line-height: 1.6; }
+.tab-navigation { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0 0 22px; padding: 7px; border: 1px solid #e2e8f0; border-radius: 16px; background: #fff; box-shadow: 0 5px 18px rgba(15, 23, 42, .05); }
+.tab-button { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 54px; background: transparent; color: #475569; font-weight: 700; }
+.tab-button:hover { background: #f1f5f9; color: #1e40af; }
+.tab-button.active { background: #1d4ed8; color: #fff; box-shadow: 0 4px 12px rgba(37, 99, 235, .2); }
+.tab-button span { font-size: 11px; opacity: .75; letter-spacing: .08em; }
+.tab-panel[hidden] { display: none !important; }
+.tab-panel > .card, .tab-panel > section.card { margin: 0 0 20px; }
+#tab-inputs > .card { padding: 28px; }
+#tab-inputs .input-section { margin-bottom: 26px; }
+#tab-inputs .input-section:not(:first-child) { padding-top: 22px; border-top: 1px solid #edf2f7; }
+#tab-inputs .section-title { font-size: 19px; }
+.input-actions { margin-top: 18px; padding: 20px 24px; border: 1px solid #dbeafe; border-radius: 16px; background: #eff6ff; }
+.input-actions .input-help { margin: 0 0 14px; }
+.actions { gap: 10px; }
+.results-column { display: grid; grid-template-columns: 1fr; gap: 18px; }
+.results-column > .card { margin: 0; }
+.section-heading { margin: 4px 0 18px; }
+.section-heading h2 { margin: 7px 0; color: #172554; font-size: 25px; }
+.comparison-results-card { margin-top: 18px !important; }
+.empty-state { padding: 20px; border: 1px dashed #cbd5e1; border-radius: 12px; color: #64748b; background: #f8fafc; line-height: 1.6; }
+#tab-charts .chart-card { margin: 0 0 18px; }
+#tab-charts .chart-card canvas { max-height: 390px; }
+#tab-charts .section-heading { margin-bottom: 24px; }
+#tab-inputs .bank-comparison { margin-bottom: 0; }
+#tab-inputs .bank-comparison > h2 { margin-top: 0; }
+#tab-inputs .bank-offer-grid { margin-top: 18px; }
+#tab-inputs .bank-comparison > .input-help { max-width: 850px; }
+@media (max-width: 650px) {
+  body { padding: 18px 12px 36px; }
+  .tab-navigation { gap: 4px; padding: 5px; }
+  .tab-button { flex-direction: column; gap: 3px; padding: 9px 4px; font-size: 12px; }
+  #tab-inputs > .card, .card { padding: 18px; }
+  .input-actions { padding: 16px; }
+  .actions button { flex: 1 1 100%; }
+}
