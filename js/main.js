@@ -9,6 +9,7 @@ const DEFAULTS = {
   reno: 10000,
   years: 25,
   rate: 3,
+  mortgageExtraMonthly: 0,
   agency: 3,
   notary: 3000,
   imu: 0,
@@ -26,7 +27,7 @@ function showValidationMessage(message = "") {
   document.getElementById("validation-message").textContent = message;
 }
 
-function renderKpis({ finalEquity, finalInvestment, cagrHouse, cagrInvestment }) {
+function renderKpis({ finalEquity, finalInvestment, cagrHouse, cagrInvestment, monthlyMortgageOutflow }) {
   const difference = finalEquity - finalInvestment;
   const houseCagrText = cagrHouse === null ? "N/D" : formatPercentage(cagrHouse);
   const investmentCagrText = cagrInvestment === null ? "N/D" : formatPercentage(cagrInvestment);
@@ -36,6 +37,7 @@ function renderKpis({ finalEquity, finalInvestment, cagrHouse, cagrInvestment })
       <div class="kpi">🏠 Patrimonio immobiliare: ${formatCurrency(finalEquity)}</div>
       <div class="kpi">💰 Investimento alternativo: ${formatCurrency(finalInvestment)}</div>
       <div class="kpi">📊 Differenza: ${formatCurrency(difference)}</div>
+      <div class="kpi">💳 Rata + spese accessorie mensili: ${formatCurrency(monthlyMortgageOutflow)}</div>
       <div class="kpi">CAGR Casa: ${houseCagrText}</div>
       <div class="kpi">CAGR Investimento: ${investmentCagrText}</div>
     </div>
@@ -47,7 +49,7 @@ function renderTable() {
   const body = document.querySelector("#results tbody");
   const headings = [
     "Anno", "Valore Immobile", "Debito Residuo", "Equity Casa",
-    "Costi Annuali", "Rata Annua", "Esborso Totale", "Investimento"
+    "Costi Annuali", "Spese Aggiuntive Mutuo", "Rata Annua", "Esborso Totale", "Investimento"
   ];
 
   head.replaceChildren();
@@ -80,7 +82,7 @@ function calculate() {
   try {
     const input = readSimulationInputs();
     const {
-      price, down, years, rate, agency, notary, reno,
+      price, down, years, rate, mortgageExtraMonthly, agency, notary, reno,
       imu, condo, maint, growth, invest, horizon
     } = input;
 
@@ -109,14 +111,15 @@ function calculate() {
       const maintenanceCost = homeValue * maint / 100;
       const annualCosts = imu + condo + maintenanceCost;
       const annualMortgage = year <= years ? mortgage.monthly * 12 : 0;
-      const totalOut = annualCosts + annualMortgage;
+      const annualMortgageExtra = year <= years ? mortgageExtraMonthly * 12 : 0;
+      const totalOut = annualCosts + annualMortgage + annualMortgageExtra;
 
       investmentValue *= 1 + invest / 100;
       const homeEquity = homeValue - balance;
 
       tableData.push([
         year, homeValue, balance, homeEquity,
-        annualCosts, annualMortgage, totalOut, investmentValue
+        annualCosts, annualMortgageExtra, annualMortgage, totalOut, investmentValue
       ]);
 
       labels.push(year);
@@ -124,7 +127,7 @@ function calculate() {
       investment.push(investmentValue);
       homeValues.push(homeValue);
       debt.push(balance);
-      costs.push(annualCosts);
+      costs.push(annualCosts + annualMortgageExtra);
     }
 
     const finalEquity = equity[equity.length - 1];
@@ -141,7 +144,8 @@ function calculate() {
       finalEquity,
       finalInvestment,
       cagrHouse: calculateCagr(finalEquity),
-      cagrInvestment: calculateCagr(finalInvestment)
+      cagrInvestment: calculateCagr(finalInvestment),
+      monthlyMortgageOutflow: mortgage.monthly + mortgageExtraMonthly
     });
 
     renderTable();
@@ -159,7 +163,7 @@ function exportCsv() {
 
   const headings = [
     "Anno", "Valore Immobile", "Debito Residuo", "Equity Casa",
-    "Costi Annuali", "Rata Annua", "Esborso Totale", "Investimento"
+    "Costi Annuali", "Spese Aggiuntive Mutuo", "Rata Annua", "Esborso Totale", "Investimento"
   ];
 
   const rows = [
