@@ -20,6 +20,7 @@ export function readSimulationInputs() {
     reno: readNumber("reno", "Ristrutturazione"),
     years: readNumber("years", "Durata mutuo"),
     rate: readNumber("rate", "Tasso mutuo"),
+    mortgageExtraMonthly: readNumber("mortgageExtraMonthly", "Spese aggiuntive mensili"),
     agency: readNumber("agency", "Agenzia immobiliare"),
     notary: readNumber("notary", "Notaio"),
     imu: readNumber("imu", "IMU annuale"),
@@ -43,7 +44,7 @@ export function readSimulationInputs() {
     throw new Error("L'orizzonte della simulazione deve essere un numero intero positivo.");
   }
 
-  const nonNegativeFields = ["reno", "rate", "agency", "notary", "imu", "condo", "maint"];
+  const nonNegativeFields = ["reno", "rate", "mortgageExtraMonthly", "agency", "notary", "imu", "condo", "maint"];
   for (const field of nonNegativeFields) {
     if (values[field] < 0) {
       throw new Error("I costi e il tasso del mutuo non possono essere negativi.");
