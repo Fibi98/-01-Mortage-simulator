@@ -68,6 +68,12 @@ function renderTable() {
 }
 
 
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (character) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  })[character]);
+}
+
 function compareBanks() {
   const results = document.getElementById("bank-comparison-results");
   const readValue = (id, label, optional = false) => {
@@ -107,10 +113,10 @@ function compareBanks() {
     ];
     results.innerHTML = `
       <table class="comparison-table">
-        <thead><tr><th>Voce</th><th>${offers[0].name}</th><th>${offers[1].name}</th></tr></thead>
+        <thead><tr><th>Voce</th><th>${escapeHtml(offers[0].name)}</th><th>${escapeHtml(offers[1].name)}</th></tr></thead>
         <tbody>${rows.map(row => `<tr><th>${row[0]}</th><td>${row[1]}</td><td>${row[2]}</td></tr>`).join("")}</tbody>
       </table>
-      <p class="comparison-verdict">${winner ? "In base ai costi inseriti, risulta meno costosa: " + winner.name + " (risparmio stimato " + money(Math.abs(offers[0].totalOutflow - offers[1].totalOutflow)) + ")." : "Le due offerte hanno lo stesso esborso complessivo stimato."}</p>
+      <p class="comparison-verdict">${winner ? "In base ai costi inseriti, risulta meno costosa: " + escapeHtml(winner.name) + " (risparmio stimato " + money(Math.abs(offers[0].totalOutflow - offers[1].totalOutflow)) + ")." : "Le due offerte hanno lo stesso esborso complessivo stimato."}</p>
       <p class="input-help">Stima matematica basata su TAN, rate mensili costanti e costi inseriti. Il TAEG è solo riportato a titolo informativo. Verifica sempre il piano e il prospetto informativo ufficiale della banca.</p>`;
     showValidationMessage();
   } catch (error) {
