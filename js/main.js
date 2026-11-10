@@ -237,8 +237,39 @@ function resetInputs() {
   document.getElementById("bank-comparison-results").replaceChildren();
 }
 
-document.getElementById("calculate-button").addEventListener("click", calculate);
+function activateTab(name) {
+  document.querySelectorAll(".tab-button").forEach((button) => {
+    const selected = button.dataset.tab === name;
+    button.classList.toggle("active", selected);
+    button.setAttribute("aria-selected", String(selected));
+  });
+  document.querySelectorAll(".tab-panel").forEach((panel) => {
+    const selected = panel.id === "tab-" + name;
+    panel.hidden = !selected;
+    panel.classList.toggle("active", selected);
+  });
+  if (name === "charts") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("#tab-charts canvas").forEach((canvas) => {
+        const chart = Chart.getChart(canvas);
+        if (chart) chart.resize();
+      });
+    });
+  }
+}
+
+document.querySelectorAll(".tab-button").forEach((button) => {
+  button.addEventListener("click", () => activateTab(button.dataset.tab));
+});
+
+document.getElementById("calculate-button").addEventListener("click", () => {
+  calculate();
+  activateTab("results");
+});
 document.getElementById("reset-button").addEventListener("click", resetInputs);
 document.getElementById("export-button").addEventListener("click", exportCsv);
-document.getElementById("compare-banks-button").addEventListener("click", compareBanks);
+document.getElementById("compare-banks-button").addEventListener("click", () => {
+  compareBanks();
+  activateTab("results");
+});
 calculate();
